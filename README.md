@@ -1,10 +1,8 @@
 Cinematic - AI Movie Recommendation System
-
 Cinematic is an intelligent movie recommendation system that provides personalized movie suggestions based on your preferences and viewing history. With a beautiful, user-friendly interface built using tkinter, CineMate lets you register, explore movie recommendations, and track your watched movies.
 
 
-Features:
-
+Features
 Personalized Recommendations: Get movie suggestions based on your favorite genres, age, and movie ratings.
 
 Watched Movie Tracker: Easily keep track of the movies you have watched.
@@ -34,7 +32,7 @@ Clone the repository
 bash
 Copy
 Edit
-git clone https://github.com/your-username/cinemate.git
+git clone https://github.com/balajikrishnan031/AI-MOVIE-RECOMMENDED_MOVIES.git
 cd cinemate
 Run the application
 Simply run the following command:
@@ -86,7 +84,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Contact
 For any questions or issues, please open an issue or reach out via email:
 
-Email: your-email@example.com
+Email: balajikrishnan031@gmail.com
 
 Explanation of Sections:
 Introduction and Features:
@@ -147,35 +145,3 @@ Edit
 - [License](#license)
 - [Contact](#contact)
 Link to Releases: GitHub allows you to tag versions of your app using Releases. You can link to specific releases in your README.
-# CineMate - AI Movie Recommendation System
-
-CineMate is an intelligent movie recommendation system that provides personalized movie suggestions based on your preferences and viewing history. With a beautiful, user-friendly interface built using `tkinter`, CineMate lets you register, explore movie recommendations, and track your watched movies.
-
-![CineMate](assets/cinemate_logo.png)
-
-## Features
-- **Personalized Recommendations:** Get movie suggestions based on your favorite genres, age, and movie ratings.
-- **Watched Movie Tracker:** Easily keep track of the movies you have watched.
-- **User Profile:** Create a profile with your details (name, age, favorite genres, bio).
-- **Dynamic Interface:** Customize your theme to make the interface look exactly how you like it.
-- **Simple and Intuitive:** Clean UI built using Python and `tkinter` for a seamless experience.
-  
-## Tech Stack
-- **Frontend:** `tkinter` (Python GUI)
-- **Backend:** Python 3
-- **Data Storage:** Local file (`cinemate_user.json`)
-- **Movie Database:** Predefined list of movies with genres, ratings, and durations.
-
-## Installation
-
-### Requirements
-1. Python 3.7 or higher
-2. `tkinter` (comes preinstalled with Python)
-
-### Clone the repository
-```bash
-git clone https://github.com/your-username/cinemate.git
-cd cinemate
-
-
-"# AI-MOVIE-RECOMMENDED_MOVIES" 
