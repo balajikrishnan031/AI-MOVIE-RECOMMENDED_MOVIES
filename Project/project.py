@@ -104,7 +104,7 @@ class CineMate:
             f = ttk.Frame(frame)
             f.pack(fill=tk.X, pady=10)
             ttk.Label(f, text=label, width=25).pack(side=tk.LEFT)
-            entry = ttk.Entry(f, show="*" if password else "")
+            entry = ttk.Entry(f, show="*" if password else "", foreground="black")  # Set input text color to black
             entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
             self.entries[key] = entry
 
