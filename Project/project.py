@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import json
-import random
 from datetime import datetime
+import random
 import os
-import pyvirtualdisplay
 
 class CineMate:
     def __init__(self, root):
@@ -12,22 +11,23 @@ class CineMate:
         self.root.title("CineMate - AI Movie Recommendations")
         self.root.geometry("1000x750")
 
+        # Cinematic theme with updated background colors
         self.themes = {
-            "Modern": {
-                "bg": "#2c3e50",
-                "fg": "#ecf0f1",
-                "accent": "#3498db",
-                "secondary": "#34495e",
-                "highlight": "#e74c3c",
-                "success": "#2ecc71",
-                "warning": "#f39c12",
-                "font_title": ("Montserrat", 24, "bold"),
-                "font_subtitle": ("Open Sans", 12),
-                "font_body": ("Open Sans", 10)
+            "Cinematic": {
+                "bg": "#2c3e50",  # Dark blue background
+                "fg": "#ecf0f1",  # Light foreground text
+                "accent": "#e74c3c",  # Red accent for action buttons
+                "highlight": "#f39c12",  # Yellow highlight for important info
+                "secondary": "#34495e",  # Darker secondary color
+                "success": "#2ecc71",  # Green for success indicators
+                "warning": "#f39c12",  # Yellow for warning
+                "font_title": ("Times New Roman", 28, "bold"),
+                "font_subtitle": ("Times New Roman", 18),
+                "font_body": ("Times New Roman", 12),
             }
         }
 
-        self.current_theme = "Modern"
+        self.current_theme = "Cinematic"
         self.apply_theme()
 
         self.movie_db = [
@@ -61,8 +61,9 @@ class CineMate:
         self.style.configure('.', background=theme["bg"], foreground=theme["fg"], font=theme["font_body"])
         self.style.configure('TFrame', background=theme["bg"])
         self.style.configure('TLabel', background=theme["bg"], foreground=theme["fg"], font=theme["font_body"])
-        self.style.configure('TButton', font=theme["font_body"], padding=5)
-        self.style.configure('Accent.TButton', background=theme["accent"], foreground=theme["fg"])
+        self.style.configure('TButton', font=theme["font_body"], padding=10, relief="flat")
+        self.style.configure('Accent.TButton', background=theme["accent"], foreground=theme["fg"], padding=10)
+        self.style.map('TButton', background=[('active', theme["accent"])])
 
     def load_user_data(self):
         try:
@@ -83,11 +84,11 @@ class CineMate:
         self.clear_window()
         theme = self.themes[self.current_theme]
 
-        frame = ttk.Frame(self.root, padding=20)
+        frame = ttk.Frame(self.root, padding=30)
         frame.pack(expand=True)
 
-        ttk.Label(frame, text="CineMate", font=theme["font_title"], foreground=theme["accent"]).pack(pady=10)
-        ttk.Label(frame, text="AI-Powered Movie Recommendations", font=theme["font_subtitle"]).pack(pady=5)
+        ttk.Label(frame, text="Welcome to CineMate", font=theme["font_title"], foreground=theme["accent"]).pack(pady=20)
+        ttk.Label(frame, text="Please Register to get started", font=theme["font_subtitle"]).pack(pady=10)
 
         self.entries = {}
         fields = [
@@ -101,13 +102,13 @@ class CineMate:
 
         for label, key, *password in fields:
             f = ttk.Frame(frame)
-            f.pack(fill=tk.X, pady=5)
+            f.pack(fill=tk.X, pady=10)
             ttk.Label(f, text=label, width=25).pack(side=tk.LEFT)
             entry = ttk.Entry(f, show="*" if password else "")
             entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
             self.entries[key] = entry
 
-        ttk.Button(frame, text="Register", command=self.register_user, style='Accent.TButton').pack(pady=15)
+        ttk.Button(frame, text="Register", command=self.register_user, style='Accent.TButton').pack(pady=20)
 
     def register_user(self):
         try:
@@ -153,14 +154,14 @@ class CineMate:
             func(tab)
 
         bottom = ttk.Frame(self.root)
-        bottom.pack(fill=tk.X, pady=10)
+        bottom.pack(fill=tk.X, pady=15)
         ttk.Button(bottom, text="Logout", command=self.logout, style='Accent.TButton').pack(side=tk.RIGHT, padx=20)
 
     def create_profile_tab(self, parent):
         user = self.current_user
         theme = self.themes[self.current_theme]
 
-        ttk.Label(parent, text="Your Profile", font=theme["font_title"], foreground=theme["accent"]).pack(pady=10)
+        ttk.Label(parent, text="Your Profile", font=theme["font_title"], foreground=theme["accent"]).pack(pady=20)
 
         info = [
             ("Name", user["name"]),
@@ -172,26 +173,24 @@ class CineMate:
 
         for label, value in info:
             row = ttk.Frame(parent)
-            row.pack(anchor="w", padx=20, pady=5)
-            ttk.Label(row, text=f"{label}:", width=15).pack(side=tk.LEFT)
-            ttk.Label(row, text=value).pack(side=tk.LEFT)
+            row.pack(anchor="w", padx=30, pady=10)
+            ttk.Label(row, text=f"{label}:", width=18).pack(side=tk.LEFT)
+            ttk.Label(row, text=value, font=("Times New Roman", 12)).pack(side=tk.LEFT)
 
-        ttk.Label(parent, text="Favorite Genres:", padding=5).pack(anchor="w", padx=20)
+        ttk.Label(parent, text="Favorite Genres:", font=("Times New Roman", 14)).pack(anchor="w", padx=30)
         genre_frame = ttk.Frame(parent)
-        genre_frame.pack(anchor="w", padx=20)
+        genre_frame.pack(anchor="w", padx=30)
         for g in user["genres"]:
-            ttk.Label(genre_frame, text=g, background=theme["accent"], foreground="white", padding=3).pack(side=tk.LEFT, padx=3)
+            ttk.Label(genre_frame, text=g, background=theme["accent"], foreground="white", padding=5).pack(side=tk.LEFT, padx=5)
 
     def create_recommendations_tab(self, parent):
         theme = self.themes[self.current_theme]
 
         self.loading_label = ttk.Label(parent, text="Generating recommendations...", font=theme["font_subtitle"])
-        self.loading_label.pack(pady=20)
+        self.loading_label.pack(pady=30)
 
-        self.rec_container = ttk.Frame(parent)
-        self.rec_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
-
-        ttk.Button(parent, text="Refresh", command=self.refresh_recommendations, style='Accent.TButton').pack()
+        self.recommendations_frame = ttk.Frame(parent)
+        self.recommendations_frame.pack(expand=True, fill=tk.BOTH, padx=30, pady=20)
 
         self.root.after(1500, self.generate_recommendations)
 
@@ -214,60 +213,49 @@ class CineMate:
         theme = self.themes[self.current_theme]
         self.loading_label.pack_forget()
 
-        for widget in self.rec_container.winfo_children():
+        for widget in self.recommendations_frame.winfo_children():
             widget.destroy()
 
         for movie in self.recommendations:
-            f = ttk.Frame(self.rec_container, padding=10, relief="solid", borderwidth=1)
-            f.pack(fill=tk.X, pady=5)
+            card = ttk.Frame(self.recommendations_frame, padding=20, style="TFrame")
+            card.pack(side=tk.LEFT, padx=20, pady=20)
 
-            ttk.Label(f, text=f"{movie['title']} ({movie['year']})", font=theme["font_subtitle"]).pack(anchor="w")
-            ttk.Label(f, text=f"Rating: {movie['rating']} | Duration: {movie['duration']} min").pack(anchor="w")
+            movie_card = tk.Frame(card, bg=theme["secondary"], relief="flat", width=200, height=300)
+            movie_card.pack_propagate(False)  # Prevent the card from resizing
 
-            genre_frame = ttk.Frame(f)
-            genre_frame.pack(anchor="w", pady=5)
-            for g in movie["genres"]:
-                bg = theme["accent"] if g in self.current_user["genres"] else theme["secondary"]
-                ttk.Label(genre_frame, text=g, background=bg, foreground="white", padding=3).pack(side=tk.LEFT, padx=3)
+            title = ttk.Label(movie_card, text=movie["title"], font=("Times New Roman", 14, "bold"), foreground=theme["accent"], anchor="center")
+            title.pack(pady=10)
 
-            score = movie["match_score"]
-            color = theme["success"] if score > 70 else theme["warning"] if score > 40 else theme["highlight"]
-            ttk.Label(f, text=f"Match Score: {score:.0f}%", background=color, foreground="white", padding=3).pack(anchor="e")
+            rating = ttk.Label(movie_card, text=f"Rating: {movie['rating']}", font=("Times New Roman", 12), anchor="center")
+            rating.pack(pady=5)
 
-            if movie["title"] not in self.current_user["watched_movies"]:
-                ttk.Button(f, text="Mark as Watched", command=lambda t=movie["title"]: self.mark_as_watched(t),
-                           style='Accent.TButton').pack(anchor="w", pady=5)
-            else:
-                ttk.Label(f, text="✓ Already watched", foreground=theme["success"]).pack(anchor="w")
+            genres = ttk.Label(movie_card, text=", ".join(movie["genres"]), font=("Times New Roman", 12), anchor="center")
+            genres.pack(pady=5)
 
-    def mark_as_watched(self, title):
-        if title not in self.current_user["watched_movies"]:
-            self.current_user["watched_movies"].append(title)
-            self.save_user_data()
-            self.display_recommendations()
-            self.create_watched_tab(self.notebook.nametowidget(self.notebook.tabs()[2]))
+            match_score = ttk.Label(movie_card, text=f"Match: {movie['match_score']}%", font=("Times New Roman", 12), anchor="center")
+            match_score.pack(pady=5)
+
+            movie_card.pack_propagate(False)
+            movie_card.pack()
+
+        # Add refresh button
+        ttk.Button(self.recommendations_frame, text="Refresh", command=self.refresh_recommendations, style='Accent.TButton').pack(pady=20)
 
     def refresh_recommendations(self):
-        theme = self.themes[self.current_theme]
-        self.loading_label.config(font=theme["font_subtitle"])
-        self.loading_label.pack(pady=20)
-        self.rec_container.pack_forget()
-        self.rec_container.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
-        self.root.after(1500, self.generate_recommendations)
+        self.generate_recommendations()
 
     def create_watched_tab(self, parent):
         theme = self.themes[self.current_theme]
-
         for widget in parent.winfo_children():
             widget.destroy()
 
-        ttk.Label(parent, text="Watched Movies", font=theme["font_title"], foreground=theme["accent"]).pack(pady=10)
+        ttk.Label(parent, text="Watched Movies", font=theme["font_title"], foreground=theme["accent"]).pack(pady=30)
 
         if not self.current_user["watched_movies"]:
-            ttk.Label(parent, text="You haven't marked any movies as watched yet.").pack()
+            ttk.Label(parent, text="You haven't marked any movies as watched yet.", font=theme["font_body"]).pack()
         else:
             for title in self.current_user["watched_movies"]:
-                ttk.Label(parent, text=title).pack(anchor="w", padx=20)
+                ttk.Label(parent, text=title, font=theme["font_body"]).pack(anchor="w", padx=30)
 
     def logout(self):
         self.current_user = None
@@ -278,8 +266,7 @@ class CineMate:
         self.create_login_interface()
 
 if __name__ == "__main__":
-    # Start a virtual display to render the Tkinter window
-    with pyvirtualdisplay.Display(visible=False, size=(1000, 750)): # Use pyvirtualdisplay.Display
-        root = tk.Tk()
-        app = CineMate(root)
-        root.mainloop()
+    root = tk.Tk()
+    app = CineMate(root)
+    root.mainloop()
+
